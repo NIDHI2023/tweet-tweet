@@ -5,6 +5,12 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Date;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class TwitterJ {
     private Twitter twitter;
@@ -116,10 +122,29 @@ public class TwitterJ {
      * This method should NOT throw an exception.  Use try/catch.
      */
     @SuppressWarnings("unchecked")
-    private void removeCommonEnglishWords()
-    {
+    private void removeCommonWords() {
 
-
+    }
+    private void removeCommonEnglishWords() {
+        try (FileReader file = new FileReader("commonWords.txt");
+             BufferedReader reader = new BufferedReader(file)
+        ) {
+            String line;
+            int wLines = 0;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("w") || line.contains("W")) {
+                    wLines++;
+                }
+            }
+            System.out.println("there are " + wLines + " lines that contain w");
+        } catch (FileNotFoundException badFile) {
+            System.out.println("File not found");
+        } catch (IOException e) {
+            System.out.println("error");
+        }
+//        for (int i = 0; i < terms.size; i++) {
+//            terms.set(i, i.get(i))
+//        }
     }
 
     /*
