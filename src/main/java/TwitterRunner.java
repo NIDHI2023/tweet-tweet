@@ -41,7 +41,8 @@ public class TwitterRunner {
          */
 
         // PART 3
-        tweety.sampleInvestigate();
+        //tweety.sampleInvestigate();
+        tweety.investigate();
 
     }//end of main method
 }

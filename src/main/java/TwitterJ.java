@@ -111,6 +111,13 @@ public class TwitterJ {
      */
     private String removePunctuation( String s )
     {
+        s = s.trim();
+            if ((s.indexOf(",") != -1) || (s.indexOf("!") != -1) || (s.indexOf("?") != -1) || (s.indexOf("$") != -1)
+            || (s.indexOf("%") != -1) || (s.indexOf("^") != -1) || (s.indexOf("&") != -1) || (s.indexOf("*") != -1)
+            || (s.indexOf("(") != -1) || (s.indexOf(")") != -1) || (s.indexOf("-") != -1) || (s.indexOf("_") != -1)
+            || (s.indexOf("/") != -1) || (s.indexOf(".") != -1) || (s.indexOf(";") != -1) || (s.indexOf(":") != -1)) {
+
+            }
         return null;
 
     }
@@ -130,13 +137,12 @@ public class TwitterJ {
              BufferedReader reader = new BufferedReader(file)
         ) {
             String line;
-            int wLines = 0;
-            while ((line = reader.readLine()) != null) {
-                if (line.contains("w") || line.contains("W")) {
-                    wLines++;
+            for (String term: terms) {
+                while ((line = reader.readLine()) != null) {
+                    if (line.equals(term)) {
+                    }
                 }
             }
-            System.out.println("there are " + wLines + " lines that contain w");
         } catch (FileNotFoundException badFile) {
             System.out.println("File not found");
         } catch (IOException e) {
