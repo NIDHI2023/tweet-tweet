@@ -1,4 +1,3 @@
-//slay
 import twitter4j.*;
 import java.util.List;
 import java.io.*;
