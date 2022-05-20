@@ -136,14 +136,21 @@ public class TwitterJ {
     }
     private void removeCommonEnglishWords() {
         try (FileReader file = new FileReader("commonWords.txt");
-             BufferedReader reader = new BufferedReader(file)
+             BufferedReader reader = new BufferedReader(file);
+             FileWriter fileW = new FileWriter("output.txt");
+             BufferedWriter writer = new BufferedWriter(fileW)
         ) {
             String line;
-            for (String term: terms) {
+            for (int i = terms.size() - 1; i >=0 ; i--) {
                 while ((line = reader.readLine()) != null) {
-                    if (line.equals(term)) {
+                    if (line.equals(terms.get(i))) {
+                        terms.remove(i);
                     }
                 }
+            }
+            //printing remaining terms in new file
+            for (String term: terms) {
+                writer.write(term + "\n");
             }
         } catch (FileNotFoundException badFile) {
             System.out.println("File not found");
@@ -184,7 +191,7 @@ public class TwitterJ {
         for (int i = 0; i < terms.size(); i+= count) {
             int j = i;
             count = 1;
-            while (terms.get(j+1).equals(terms.get(j))) {
+            while (terms.get(j+1).equalsIgnoreCase(terms.get(j))) {
                 count++;
                 j++;
             }
