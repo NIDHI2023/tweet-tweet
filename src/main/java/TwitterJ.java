@@ -1,4 +1,3 @@
-
 import twitter4j.*;
 import java.util.List;
 import java.io.*;
@@ -28,6 +27,9 @@ public class TwitterJ {
         consolePrint = console;
         statuses = new ArrayList<>();
         terms = new ArrayList<>();
+        //these were added because they weren't intialized in the constructor
+        popularWord = "";
+        frequencyMax = 0;
     }
 
     /*  Part 1 */
@@ -174,6 +176,27 @@ public class TwitterJ {
     @SuppressWarnings("unchecked")
     public String mostPopularWord()
     {
+        sortAndRemoveEmpties();
+        int count = 1;
+        popularWord = terms.get(0);
+        frequencyMax = 1;
+        //skips to each new word
+        for (int i = 0; i < terms.size(); i+= count) {
+            int j = i;
+            count = 1;
+            while (terms.get(j+1).equals(terms.get(j))) {
+                count++;
+                j++;
+            }
+            if (count > frequencyMax) {
+                popularWord = terms.get(i);
+                frequencyMax = count;
+            }
+        }
+        return popularWord;
+
+
+        /*alternate way
         ArrayList<String> temp = new ArrayList<>();
         for (String s: terms) {
             temp.add(s);
@@ -181,18 +204,22 @@ public class TwitterJ {
         //this is a high potential spot for bugs
         for (int i = 0; i < temp.size(); i++) {
             int current = 0;
+            //Goes through temp list checking if it matches current one being looked at; skips over current one being looked at
             for (int j = temp.size() - 1 ; j >= 0; j--) {
                 if (j!= i && (temp.get(i).equalsIgnoreCase(temp.get(j)))) {
                     current++;
                     temp.remove(j);
                 }
             }
+            //adds the count of the current term being looked at
+            current = current + 1;
             if (current > frequencyMax) {
                 popularWord = temp.get(i);
                 frequencyMax = current;
             }
         }
         return popularWord;
+        */
     }
 
     /*
