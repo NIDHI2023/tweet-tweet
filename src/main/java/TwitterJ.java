@@ -170,7 +170,7 @@ public class TwitterJ {
     @SuppressWarnings("unchecked")
     public void sortAndRemoveEmpties()
     {
-
+    //selection sort
 
     }
 
