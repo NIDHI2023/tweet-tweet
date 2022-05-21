@@ -120,7 +120,7 @@ public class TwitterJ {
             || (s.indexOf("/") != -1) || (s.indexOf(".") != -1) || (s.indexOf(";") != -1) || (s.indexOf(":") != -1)) {
 
             }
-        return null;
+        return s;
 
     }
 
@@ -131,9 +131,6 @@ public class TwitterJ {
      * This method should NOT throw an exception.  Use try/catch.
      */
     @SuppressWarnings("unchecked")
-    private void removeCommonWords() {
-
-    }
     private void removeCommonEnglishWords() {
         try (FileReader file = new FileReader("commonWords.txt");
              BufferedReader reader = new BufferedReader(file);
@@ -183,6 +180,7 @@ public class TwitterJ {
     @SuppressWarnings("unchecked")
     public String mostPopularWord()
     {
+        removeCommonEnglishWords();
         sortAndRemoveEmpties();
         int count = 1;
         popularWord = terms.get(0);
@@ -191,7 +189,7 @@ public class TwitterJ {
         for (int i = 0; i < terms.size(); i+= count) {
             int j = i;
             count = 1;
-            while (terms.get(j+1).equalsIgnoreCase(terms.get(j))) {
+            while (j+1 < terms.size() && terms.get(j+1).equalsIgnoreCase(terms.get(j))) {
                 count++;
                 j++;
             }
