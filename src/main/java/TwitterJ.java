@@ -114,12 +114,43 @@ public class TwitterJ {
     private String removePunctuation( String s )
     {
         s = s.trim();
-            if ((s.indexOf(",") != -1) || (s.indexOf("!") != -1) || (s.indexOf("?") != -1) || (s.indexOf("$") != -1)
-            || (s.indexOf("%") != -1) || (s.indexOf("^") != -1) || (s.indexOf("&") != -1) || (s.indexOf("*") != -1)
-            || (s.indexOf("(") != -1) || (s.indexOf(")") != -1) || (s.indexOf("-") != -1) || (s.indexOf("_") != -1)
-            || (s.indexOf("/") != -1) || (s.indexOf(".") != -1) || (s.indexOf(";") != -1) || (s.indexOf(":") != -1)) {
-
+        for (int i = 0; i < s.length(); i++) {
+            if (s.indexOf(",") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("!") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("'") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("?") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("$") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("%") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("^") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("&") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("*") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("(") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf(")") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("-") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("_") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("/") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf(".") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf(";") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf(":") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
             }
+        }
         return s;
 
     }
@@ -140,7 +171,7 @@ public class TwitterJ {
             String line;
             for (int i = terms.size() - 1; i >=0 ; i--) {
                 while ((line = reader.readLine()) != null) {
-                    if (line.equals(terms.get(i))) {
+                    if (line.equalsIgnoreCase(terms.get(i))) {
                         terms.remove(i);
                     }
                 }
