@@ -270,9 +270,40 @@ public class TwitterJ {
 
 
     /*  Part 3 */
+    private boolean isInList (ArrayList<String> arr, String target) {
+        for (String s: arr) {
+            if (target.equals(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void investigate ()
     {
-        //Enter your code here
+        try {
+            List<Status> mentions = new ArrayList<>();
+            mentions = twitter.getMentionsTimeline();
+            ArrayList<String> usernames = new ArrayList<>();
+            ArrayList<Integer> counts = new ArrayList<>();
+            String maxUsername = "";
+            int maxCount = 0;
+
+            for (int i = 0; i < mentions.size(); i++) {
+                int count = 0;
+                for (int j = 0; j < mentions.size(); j++) {
+                    if ((mentions.get(j).getUser().getName().equals(mentions.get(i).getUser().getName())) && j!= i
+                            && !isInList(usernames,mentions.get(j).getUser().getName())) {
+                        count++;
+                    }
+                }
+                usernames.add(mentions.get(i).getUser().getName());
+                counts.add(count);
+            }
+
+        } catch (TwitterException t) {
+            t.printStackTrace();
+        }
     }
 
     /*
