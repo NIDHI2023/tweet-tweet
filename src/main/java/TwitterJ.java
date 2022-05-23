@@ -162,6 +162,28 @@ public class TwitterJ {
     public void sortAndRemoveEmpties()
     {
 
+        String temp = "";
+        String early = "";
+        int earlyI = 0;
+        for (int t = 0; t < terms.size(); t++){
+            if (terms.get(t).equals(null)){
+                terms.remove(t);
+                t--;
+            }
+        }
+        for (int i = 0; i < terms.size()/2; i++){
+            early = terms.get(i);
+            earlyI= i;
+            for (int j = i; j < terms.size(); i++){
+                if (terms.get(j).compareTo(early) < 0){
+                    early = terms.get(j);
+                    earlyI= j;
+                }
+            }
+            temp = terms.get(i);
+            terms.set(i,early);
+            terms.set(earlyI, temp);
+        }
 
     }
 
