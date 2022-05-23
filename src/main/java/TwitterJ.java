@@ -301,6 +301,33 @@ public class TwitterJ {
                 counts.add(count);
             }
 
+            for (int i = 0; i < counts.size()/2; i++) {
+                int max = 0;
+                int maxIndex = 0;
+                for (int j = 0; j < counts.size(); j++) {
+                    if (counts.get(j) > counts.get(j+1)){
+                        max = counts.get(j);
+                        maxIndex = j;
+                    }
+                }
+         
+
+//                Make max and maxindex vars
+//                Iterate through counts list:
+//                If current count is greater than the count after it
+//                Set it to max
+//                Set maxIndex to j
+//
+//                Set temp to current count
+//                Set current count to max
+//                Set counts at maxIndex to temp
+//                Set tempU to current username
+//                Set current count to username at maxIndex
+//                Set usernames at maxIndex to tempU
+
+
+            }
+
         } catch (TwitterException t) {
             t.printStackTrace();
         }
