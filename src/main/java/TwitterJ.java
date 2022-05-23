@@ -113,14 +113,46 @@ public class TwitterJ {
      */
     private String removePunctuation( String s )
     {
+        //In cases where there's stuff at the end (ex: "hello!!") the !! isn't deleted but works for rest
         s = s.trim();
-            if ((s.indexOf(",") != -1) || (s.indexOf("!") != -1) || (s.indexOf("?") != -1) || (s.indexOf("$") != -1)
-            || (s.indexOf("%") != -1) || (s.indexOf("^") != -1) || (s.indexOf("&") != -1) || (s.indexOf("*") != -1)
-            || (s.indexOf("(") != -1) || (s.indexOf(")") != -1) || (s.indexOf("-") != -1) || (s.indexOf("_") != -1)
-            || (s.indexOf("/") != -1) || (s.indexOf(".") != -1) || (s.indexOf(";") != -1) || (s.indexOf(":") != -1)) {
-
+        for (int i = 0; i < s.length(); i++) {
+            if (s.indexOf(",") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("!") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("'") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("?") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("$") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("%") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("^") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("&") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("*") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("(") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf(")") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("-") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("_") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf("/") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf(".") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf(";") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
+            } else if (s.indexOf(":") == i) {
+                s = s.substring(0,i) + s.substring(i+1);
             }
-        return null;
+        }
+        return s;
 
     }
 
@@ -131,9 +163,6 @@ public class TwitterJ {
      * This method should NOT throw an exception.  Use try/catch.
      */
     @SuppressWarnings("unchecked")
-    private void removeCommonWords() {
-
-    }
     private void removeCommonEnglishWords() {
         try (FileReader file = new FileReader("commonWords.txt");
              BufferedReader reader = new BufferedReader(file);
@@ -143,7 +172,7 @@ public class TwitterJ {
             String line;
             for (int i = terms.size() - 1; i >=0 ; i--) {
                 while ((line = reader.readLine()) != null) {
-                    if (line.equals(terms.get(i))) {
+                    if (line.equalsIgnoreCase(terms.get(i))) {
                         terms.remove(i);
                     }
                 }
@@ -172,6 +201,7 @@ public class TwitterJ {
     {
     //selection sort
 
+
     }
 
     /*
@@ -183,6 +213,7 @@ public class TwitterJ {
     @SuppressWarnings("unchecked")
     public String mostPopularWord()
     {
+        removeCommonEnglishWords();
         sortAndRemoveEmpties();
         int count = 1;
         popularWord = terms.get(0);
@@ -191,7 +222,7 @@ public class TwitterJ {
         for (int i = 0; i < terms.size(); i+= count) {
             int j = i;
             count = 1;
-            while (terms.get(j+1).equalsIgnoreCase(terms.get(j))) {
+            while (j+1 < terms.size() && terms.get(j+1).equalsIgnoreCase(terms.get(j))) {
                 count++;
                 j++;
             }
@@ -241,9 +272,67 @@ public class TwitterJ {
 
 
     /*  Part 3 */
+    private boolean isInList (ArrayList<String> arr, String target) {
+        for (String s: arr) {
+            if (target.equals(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void investigate ()
     {
-        //Enter your code here
+        try {
+            List<Status> mentions = new ArrayList<>();
+            mentions = twitter.getMentionsTimeline();
+            ArrayList<String> usernames = new ArrayList<>();
+            ArrayList<Integer> counts = new ArrayList<>();
+            String maxUsername = "";
+            int maxCount = 0;
+
+            for (int i = 0; i < mentions.size(); i++) {
+                int count = 0;
+                for (int j = 0; j < mentions.size(); j++) {
+                    if ((mentions.get(j).getUser().getName().equals(mentions.get(i).getUser().getName())) && j!= i
+                            && !isInList(usernames,mentions.get(j).getUser().getName())) {
+                        count++;
+                    }
+                }
+                usernames.add(mentions.get(i).getUser().getName());
+                counts.add(count);
+            }
+
+            for (int i = 0; i < counts.size()/2; i++) {
+                int max = 0;
+                int maxIndex = 0;
+                for (int j = 0; j < counts.size(); j++) {
+                    if (counts.get(j) > counts.get(j+1)){
+                        max = counts.get(j);
+                        maxIndex = j;
+                    }
+                }
+         
+
+//                Make max and maxindex vars
+//                Iterate through counts list:
+//                If current count is greater than the count after it
+//                Set it to max
+//                Set maxIndex to j
+//
+//                Set temp to current count
+//                Set current count to max
+//                Set counts at maxIndex to temp
+//                Set tempU to current username
+//                Set current count to username at maxIndex
+//                Set usernames at maxIndex to tempU
+
+
+            }
+
+        } catch (TwitterException t) {
+            t.printStackTrace();
+        }
     }
 
     /*
