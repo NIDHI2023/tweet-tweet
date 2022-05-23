@@ -113,6 +113,7 @@ public class TwitterJ {
      */
     private String removePunctuation( String s )
     {
+        //In cases where there's stuff at the end (ex: "hello!!") the !! isn't deleted but works for rest
         s = s.trim();
         for (int i = 0; i < s.length(); i++) {
             if (s.indexOf(",") == i) {
