@@ -102,6 +102,7 @@ public class TwitterJ {
                 terms.add(str);
             }
         }
+        printTerms("split into words");
     }
 
     /*
@@ -114,6 +115,7 @@ public class TwitterJ {
     private String removePunctuation( String s )
     {
         //In cases where there's stuff at the end (ex: "hello!!") the !! isn't deleted but works for rest
+        // ' also doesn't work in any case
         s = s.trim();
         for (int i = 0; i < s.length(); i++) {
             if (s.indexOf(",") == i) {
@@ -170,13 +172,13 @@ public class TwitterJ {
              BufferedWriter writer = new BufferedWriter(fileW)
         ) {
             String line;
-            for (int i = terms.size() - 1; i >=0 ; i--) {
                 while ((line = reader.readLine()) != null) {
-                    if (line.equalsIgnoreCase(terms.get(i))) {
-                        terms.remove(i);
+                    for (int i = terms.size() - 1; i >=0 ; i--) {
+                        if (line.equalsIgnoreCase(terms.get(i))) {
+                            terms.remove(i);
+                        }
                     }
                 }
-            }
             //printing remaining terms in new file
             for (String term: terms) {
                 writer.write(term + "\n");
@@ -186,6 +188,8 @@ public class TwitterJ {
         } catch (IOException e) {
             System.out.println("error");
         }
+
+        printTerms("remove english and write stuff to file");
 //        for (int i = 0; i < terms.size; i++) {
 //            terms.set(i, i.get(i))
 //        }
@@ -199,9 +203,42 @@ public class TwitterJ {
     @SuppressWarnings("unchecked")
     public void sortAndRemoveEmpties()
     {
-    //selection sort
+        String temp = "";
+        String early = "";
+        int earlyI = 0;
+        for (int t = 0; t < terms.size(); t++){
+            if (terms.get(t) == null || terms.get(t).equals(" ")){
+                terms.remove(t);
+                t--;
+            }
+        }
+
+        //this is adding random spaces but it's in order
+        for (int i = 0; i < terms.size()/2; i++) {
+            early = terms.get(i);
+            earlyI = i;
+            for (int j = i; j < terms.size(); j++) {
+                //finding the first word
+                if (terms.get(j).compareTo(early) < 0) {
+                    early = terms.get(j);
+                    earlyI = j;
+                }
+            }
+            temp = terms.get(i);
+            terms.set(i, early);
+            terms.set(earlyI, temp);
+        }
+            printTerms("sort");
 
 
+    }
+
+    public void printTerms(String status) {
+        System.out.println("---------------TERMS------------");
+        System.out.println("-------------" + status + "------------");
+        for (int i = 0; i < terms.size()/100; i++) {
+            System.out.println(terms.get(i));
+        }
     }
 
     /*

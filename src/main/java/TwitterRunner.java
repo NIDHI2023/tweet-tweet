@@ -31,8 +31,10 @@ public class TwitterRunner {
          while (!twitter_handle.equals("done"))
          {
              tweety.queryHandle(twitter_handle);
+
             consolePrint.println("The most common word from @" + twitter_handle + " is: " + tweety.mostPopularWord()+ ".");
 				consolePrint.println("The word appears " + tweety.getFrequencyMax() + " times.");
+                tweety.printTerms("main");
             consolePrint.println();
             consolePrint.print("Please enter a Twitter handle, do not include the @ symbol --> ");
             twitter_handle = scan.next();
