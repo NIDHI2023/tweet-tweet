@@ -102,7 +102,6 @@ public class TwitterJ {
                 terms.add(str);
             }
         }
-        printTerms("split into words");
     }
 
     /*
@@ -118,40 +117,78 @@ public class TwitterJ {
         // ' also doesn't work in any case
         s = s.trim();
         for (int i = 0; i < s.length(); i++) {
-            if (s.indexOf(",") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf("!") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf("'") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf("?") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf("$") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf("%") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf("^") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf("&") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf("*") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf("(") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf(")") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf("-") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf("_") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf("/") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf(".") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf(";") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
-            } else if (s.indexOf(":") == i) {
-                s = s.substring(0,i) + s.substring(i+1);
+            if (i == s.length()) {
+                if (s.indexOf(",") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf("!") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf("'") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf("?") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf("$") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf("%") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf("^") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf("&") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf("*") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf("(") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf(")") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf("-") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf("_") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf("/") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf(".") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf(";") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf(":") == i) {
+                    s = s.substring(0,i);
+                }
+            } else {
+                if (s.indexOf(",") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf("!") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf("'") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf("?") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf("$") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf("%") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf("^") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf("&") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf("*") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf("(") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf(")") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf("-") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf("_") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf("/") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf(".") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf(";") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf(":") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                }
             }
         }
         return s;
@@ -189,7 +226,6 @@ public class TwitterJ {
             System.out.println("error");
         }
 
-        printTerms("remove english and write stuff to file");
 //        for (int i = 0; i < terms.size; i++) {
 //            terms.set(i, i.get(i))
 //        }
@@ -206,12 +242,6 @@ public class TwitterJ {
         String temp = "";
         String early = "";
         int earlyI = 0;
-        for (int t = 0; t < terms.size(); t++){
-            if (terms.get(t) == null || terms.get(t).equals(" ")){
-                terms.remove(t);
-                t--;
-            }
-        }
 
         //this is adding random spaces but it's in order
         for (int i = 0; i < terms.size()/2; i++) {
@@ -227,18 +257,22 @@ public class TwitterJ {
             temp = terms.get(i);
             terms.set(i, early);
             terms.set(earlyI, temp);
+
+
+            for (int t = terms.size() - 1; t >= 0; t--){
+                if (terms.get(t).equals("") || terms.get(t).equals(" ") || terms.get(t) == null){
+                    terms.remove(t);
+                }
+            }
+
         }
-            printTerms("sort");
-
-
-    }
-
-    public void printTerms(String status) {
-        System.out.println("---------------TERMS------------");
-        System.out.println("-------------" + status + "------------");
-        for (int i = 0; i < terms.size()/100; i++) {
-            System.out.println(terms.get(i));
+        for (int t = terms.size() - 1; t >= 0; t--){
+            if (terms.get(t) == null || terms.get(t).equals(" ")){
+                terms.remove(t);
+            }
         }
+
+
     }
 
     /*
@@ -259,7 +293,7 @@ public class TwitterJ {
         for (int i = 0; i < terms.size(); i+= count) {
             int j = i;
             count = 1;
-            while (j+1 < terms.size() && terms.get(j+1).equalsIgnoreCase(terms.get(j))) {
+            while (j + 1 < terms.size() && terms.get(j + 1).equalsIgnoreCase(terms.get(j))) {
                 count++;
                 j++;
             }
@@ -327,11 +361,10 @@ public class TwitterJ {
             ArrayList<Integer> counts = new ArrayList<>();
             String maxUsername = "";
             int maxCount = 0;
-
+            int count = 0;
             for (int i = 0; i < mentions.size(); i++) {
-                int count = 0;
                 for (int j = 0; j < mentions.size(); j++) {
-                    if ((mentions.get(j).getUser().getName().equals(mentions.get(i).getUser().getName())) && j!= i
+                    if ((mentions.get(j).getUser().getName().equals(mentions.get(i).getUser().getName()))
                             && !isInList(usernames,mentions.get(j).getUser().getName())) {
                         count++;
                     }
@@ -344,27 +377,24 @@ public class TwitterJ {
                 int max = 0;
                 int maxIndex = 0;
                 for (int j = 0; j < counts.size(); j++) {
-                    if (counts.get(j) > counts.get(j+1)){
+                    if (counts.get(j) > counts.get(j + 1)){
                         max = counts.get(j);
                         maxIndex = j;
                     }
                 }
-         
+                int temp = count;
+                count = max;
+                counts.set(maxIndex, temp);
+                String tempU = usernames.get(i);
+                usernames.set(i, usernames.get(maxIndex));
+                usernames.set(maxIndex, tempU);
+            }
 
-//                Make max and maxindex vars
-//                Iterate through counts list:
-//                If current count is greater than the count after it
-//                Set it to max
-//                Set maxIndex to j
-//
-//                Set temp to current count
-//                Set current count to max
-//                Set counts at maxIndex to temp
-//                Set tempU to current username
-//                Set current count to username at maxIndex
-//                Set usernames at maxIndex to tempU
-
-
+            //print out ordered mentions
+            for (int i = 0; i < usernames.size(); i ++) {
+                System.out.println("Username" + i + ":" + usernames.get(i));
+                System.out.println("Number of mentions:" + counts.get(i));
+                System.out.println();
             }
 
         } catch (TwitterException t) {
