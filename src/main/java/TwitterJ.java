@@ -360,8 +360,21 @@ public class TwitterJ {
                     String[] tempArr;
                     tempArr = timeline.get(i).getText().split(" ");
                     for (String s: tempArr) {
+                        for (int index = 0; index < s.length(); index++) {
+                            String letter = s.substring(index,index+1);
+                            if (!((letter.compareTo("a") <= 25 && letter.compareTo("a") >= 0)
+                            || (letter.compareTo("A") <= 25 && letter.compareTo("A") >= 0)
+                            || (letter.compareTo("0") <= 9 && letter.compareTo("0") >= 0)
+                            || letter.equals("_") || letter.equals("@"))) {
+                                if (index == s.length()-1) {
+                                    s = s.substring(0,index);
+                                } else {
+                                    s = s.substring(0, index) + s.substring(index + 1);
+                                }
+                            }
+                        }
                         if (s.indexOf("@") == 0){
-                            mentions.add(removePunctuation(s.substring(1)));
+                            mentions.add(s.substring(1));
                         }
                     }
                 }
@@ -388,21 +401,21 @@ public class TwitterJ {
                 counts.add(count);
             }
 
-            for (int i = 0; i < counts.size()/2; i++) {
-                int max = 0;
-                int maxIndex = 0;
-                for (int j = 0; j < counts.size()-1; j++) {
-                    if (counts.get(j) > counts.get(j + 1)){
-                        max = counts.get(j);
+            for (int i = 0; i < counts.size() - 1; i++) {
+                int maxIndex = i;
+                for (int j = i + 1; j < counts.size(); j++) {
+                    if (counts.get(j) > counts.get(i)) {
                         maxIndex = j;
                     }
                 }
-                int temp = counts.get(i);
-                counts.set(i,counts.get(maxIndex));
-                counts.set(maxIndex, temp);
-                String tempU = usernames.get(i);
-                usernames.set(i, usernames.get(maxIndex));
-                usernames.set(maxIndex, tempU);
+                if (maxIndex != i) {
+                    int temp = counts.get(i);
+                    counts.set(i, counts.get(maxIndex));
+                    counts.set(maxIndex, temp);
+                    String temp2 = usernames.get(i);
+                    usernames.set(i, usernames.get(maxIndex));
+                    usernames.set(maxIndex, temp2);
+                }
             }
 
             System.out.println("i am in investigate");
