@@ -43,7 +43,6 @@ public class TwitterRunner {
 
         // PART 3
         //tweety.sampleInvestigate();
-        System.out.println("PART 3");
         tweety.investigate();
 
     }//end of main method
