@@ -117,12 +117,12 @@ public class TwitterJ {
         // ' also doesn't work in any case
         s = s.trim();
         for (int i = 0; i < s.length(); i++) {
-            if (i == s.length()) {
+            if (i == s.length()-1) {
                 if (s.indexOf(",") == i) {
                     s = s.substring(0,i);
                 } else if (s.indexOf("!") == i) {
                     s = s.substring(0,i);
-                } else if (s.indexOf("'") == i) {
+                } else if (s.indexOf("\'") == i) {
                     s = s.substring(0,i);
                 } else if (s.indexOf("?") == i) {
                     s = s.substring(0,i);
@@ -151,6 +151,10 @@ public class TwitterJ {
                 } else if (s.indexOf(";") == i) {
                     s = s.substring(0,i);
                 } else if (s.indexOf(":") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf("@") == i) {
+                    s = s.substring(0,i);
+                } else if (s.indexOf("#") == i) {
                     s = s.substring(0,i);
                 }
             } else {
@@ -158,7 +162,7 @@ public class TwitterJ {
                     s = s.substring(0,i) + s.substring(i+1);
                 } else if (s.indexOf("!") == i) {
                     s = s.substring(0,i) + s.substring(i+1);
-                } else if (s.indexOf("'") == i) {
+                } else if (s.indexOf("\'") == i) {
                     s = s.substring(0,i) + s.substring(i+1);
                 } else if (s.indexOf("?") == i) {
                     s = s.substring(0,i) + s.substring(i+1);
@@ -187,6 +191,10 @@ public class TwitterJ {
                 } else if (s.indexOf(";") == i) {
                     s = s.substring(0,i) + s.substring(i+1);
                 } else if (s.indexOf(":") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf("@") == i) {
+                    s = s.substring(0,i) + s.substring(i+1);
+                } else if (s.indexOf("#") == i) {
                     s = s.substring(0,i) + s.substring(i+1);
                 }
             }
@@ -303,32 +311,6 @@ public class TwitterJ {
             }
         }
         return popularWord;
-
-
-        /*alternate way
-        ArrayList<String> temp = new ArrayList<>();
-        for (String s: terms) {
-            temp.add(s);
-        }
-        //this is a high potential spot for bugs
-        for (int i = 0; i < temp.size(); i++) {
-            int current = 0;
-            //Goes through temp list checking if it matches current one being looked at; skips over current one being looked at
-            for (int j = temp.size() - 1 ; j >= 0; j--) {
-                if (j!= i && (temp.get(i).equalsIgnoreCase(temp.get(j)))) {
-                    current++;
-                    temp.remove(j);
-                }
-            }
-            //adds the count of the current term being looked at
-            current = current + 1;
-            if (current > frequencyMax) {
-                popularWord = temp.get(i);
-                frequencyMax = current;
-            }
-        }
-        return popularWord;
-        */
     }
 
     /*
@@ -354,9 +336,55 @@ public class TwitterJ {
 
     public void investigate ()
     {
+        Scanner scan = new Scanner(System.in);
+        consolePrint.print("Please enter a Twitter handle without the @symbol --> ");
+        String twitter_handle = scan.next();
+
         try {
-            List<Status> mentions = new ArrayList<>();
-            mentions = twitter.getMentionsTimeline();
+            ArrayList<String> mentions = new ArrayList<>();
+            List<Status> timeline = new ArrayList<>();
+
+            Paging page = new Paging (1,200);
+            int p = 1;
+            while (p <= 10)
+            {
+                page.setPage(p);
+                timeline.addAll(twitter.getUserTimeline(twitter_handle, page));
+                p++;
+            }
+
+            //wouldn't work for something like @2PM
+            //or text like "@helen_zhu's cat"
+            for (int i = 0; i < 100; i++) {
+                if (timeline.get(i).getText().contains("@")) {
+                    String[] tempArr;
+                    tempArr = timeline.get(i).getText().split(" ");
+                    for (String s: tempArr) {
+                        for (int index = 0; index < s.length(); index++) {
+                            String letter = s.substring(index,index+1);
+                            if (!((letter.compareTo("a") <= 25 && letter.compareTo("a") >= 0)
+                            || (letter.compareTo("A") <= 25 && letter.compareTo("A") >= 0)
+                            || (letter.compareTo("0") <= 9 && letter.compareTo("0") >= 0)
+                            || letter.equals("_") || letter.equals("@"))) {
+                                if (index == s.length()-1) {
+                                    s = s.substring(0,index);
+                                } else {
+                                    s = s.substring(0, index) + s.substring(index + 1);
+                                }
+                            }
+                        }
+                        if (s.indexOf("@") == 0){
+                            mentions.add(s.substring(1));
+                        }
+                    }
+                }
+            }
+
+
+            System.out.println("Showing who @" + twitter_handle + " has mentioned:");
+            for (String s: mentions) {
+                System.out.println("@" + s);
+            }
             ArrayList<String> usernames = new ArrayList<>();
             ArrayList<Integer> counts = new ArrayList<>();
             String maxUsername = "";
@@ -364,42 +392,46 @@ public class TwitterJ {
             int count = 0;
             for (int i = 0; i < mentions.size(); i++) {
                 for (int j = 0; j < mentions.size(); j++) {
-                    if ((mentions.get(j).getUser().getName().equals(mentions.get(i).getUser().getName()))
-                            && !isInList(usernames,mentions.get(j).getUser().getName())) {
+                    if ((mentions.get(j).equals(mentions.get(i)))
+                            && !isInList(usernames,mentions.get(j))) {
                         count++;
                     }
                 }
-                usernames.add(mentions.get(i).getUser().getName());
+                usernames.add(mentions.get(i));
                 counts.add(count);
             }
 
-            for (int i = 0; i < counts.size()/2; i++) {
-                int max = 0;
-                int maxIndex = 0;
-                for (int j = 0; j < counts.size(); j++) {
-                    if (counts.get(j) > counts.get(j + 1)){
-                        max = counts.get(j);
+            for (int i = 0; i < counts.size() - 1; i++) {
+                int maxIndex = i;
+                for (int j = i + 1; j < counts.size(); j++) {
+                    if (counts.get(j) > counts.get(i)) {
                         maxIndex = j;
                     }
                 }
-                int temp = count;
-                count = max;
-                counts.set(maxIndex, temp);
-                String tempU = usernames.get(i);
-                usernames.set(i, usernames.get(maxIndex));
-                usernames.set(maxIndex, tempU);
+                if (maxIndex != i) {
+                    int temp = counts.get(i);
+                    counts.set(i, counts.get(maxIndex));
+                    counts.set(maxIndex, temp);
+                    String temp2 = usernames.get(i);
+                    usernames.set(i, usernames.get(maxIndex));
+                    usernames.set(maxIndex, temp2);
+                }
             }
 
+            System.out.println("i am in investigate");
             //print out ordered mentions
             for (int i = 0; i < usernames.size(); i ++) {
-                System.out.println("Username" + i + ":" + usernames.get(i));
-                System.out.println("Number of mentions:" + counts.get(i));
+                System.out.println("Username " + (i + 1) + ": " + usernames.get(i));
+                System.out.println("Number of mentions: " + counts.get(i));
                 System.out.println();
             }
+
 
         } catch (TwitterException t) {
             t.printStackTrace();
         }
+
+
     }
 
     /*
