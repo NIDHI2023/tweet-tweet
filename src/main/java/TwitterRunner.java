@@ -23,21 +23,21 @@ public class TwitterRunner {
         // Choose a public Twitter user's handle
 
 
-//         Scanner scan = new Scanner(System.in);
-//         consolePrint.print("Please enter a Twitter handle, do not include the @symbol --> ");
-//         String twitter_handle = scan.next();
-//
-//         //Find and print the most popular word they tweet
-//         while (!twitter_handle.equals("done"))
-//         {
-//             tweety.queryHandle(twitter_handle);
-//
-//            consolePrint.println("The most common word from @" + twitter_handle + " is: " + tweety.mostPopularWord()+ ".");
-//				consolePrint.println("The word appears " + tweety.getFrequencyMax() + " times.");
-//            consolePrint.println();
-//            consolePrint.print("Please enter a Twitter handle, do not include the @ symbol --> ");
-//            twitter_handle = scan.next();
-//         }
+         Scanner scan = new Scanner(System.in);
+         consolePrint.print("Please enter a Twitter handle, do not include the @symbol --> ");
+         String twitter_handle = scan.next();
+
+         //Find and print the most popular word they tweet
+         while (!twitter_handle.equals("done"))
+         {
+             tweety.queryHandle(twitter_handle);
+
+            consolePrint.println("The most common word from @" + twitter_handle + " is: " + tweety.mostPopularWord()+ ".");
+				consolePrint.println("The word appears " + tweety.getFrequencyMax() + " times.");
+            consolePrint.println();
+            consolePrint.print("Please enter a Twitter handle, do not include the @ symbol --> ");
+            twitter_handle = scan.next();
+         }
 
 
 

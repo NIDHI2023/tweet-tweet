@@ -113,8 +113,6 @@ public class TwitterJ {
      */
     private String removePunctuation( String s )
     {
-        //In cases where there's stuff at the end (ex: "hello!!") the !! isn't deleted but works for rest
-        // ' also doesn't work in any case
         s = s.trim();
         for (int i = 0; i < s.length(); i++) {
             if (i == s.length()-1) {
@@ -251,7 +249,6 @@ public class TwitterJ {
         String early = "";
         int earlyI = 0;
 
-        //this is adding random spaces but it's in order
         for (int i = 0; i < terms.size()/2; i++) {
             early = terms.get(i);
             earlyI = i;
@@ -353,52 +350,51 @@ public class TwitterJ {
                 p++;
             }
 
-            //wouldn't work for something like @2PM
-            //or text like "@helen_zhu's cat"
             for (int i = 0; i < 100; i++) {
                 if (timeline.get(i).getText().contains("@")) {
                     String[] tempArr;
                     tempArr = timeline.get(i).getText().split(" ");
                     for (String s: tempArr) {
-                        for (int index = 0; index < s.length(); index++) {
-                            String letter = s.substring(index,index+1);
-                            if (!((letter.compareTo("a") <= 25 && letter.compareTo("a") >= 0)
-                            || (letter.compareTo("A") <= 25 && letter.compareTo("A") >= 0)
-                            || (letter.compareTo("0") <= 9 && letter.compareTo("0") >= 0)
-                            || letter.equals("_") || letter.equals("@"))) {
-                                if (index == s.length()-1) {
-                                    s = s.substring(0,index);
-                                } else {
-                                    s = s.substring(0, index) + s.substring(index + 1);
+                        if (s.length() != 0) {
+                            int index = 0;
+                            String letter = s.substring(index, index + 1);
+                            String temp = "";
+                            while (index < s.length() && ((letter.compareTo("a") <= 25 && letter.compareTo("a") >= 0)
+                                    || (letter.compareTo("A") <= 25 && letter.compareTo("A") >= 0)
+                                    || (letter.compareTo("0") <= 9 && letter.compareTo("0") >= 0)
+                                    || letter.equals("_") || letter.equals("@"))) {
+//
+                                temp += letter;
+                                index++;
+                                if (index < s.length()) {
+                                    letter = s.substring(index, index + 1);
                                 }
                             }
-                        }
-                        if (s.indexOf("@") == 0){
-                            mentions.add(s.substring(1));
+                            if (s.indexOf("@") == 0) {
+                                mentions.add(temp.substring(1));
+                            }
                         }
                     }
+
+
                 }
             }
 
-
-            System.out.println("Showing who @" + twitter_handle + " has mentioned:");
-            for (String s: mentions) {
-                System.out.println("@" + s);
-            }
+            System.out.println("Showing the top handles " + twitter_handle + " has mentioned:");
             ArrayList<String> usernames = new ArrayList<>();
             ArrayList<Integer> counts = new ArrayList<>();
-            String maxUsername = "";
-            int maxCount = 0;
             int count = 0;
-            for (int i = 0; i < mentions.size(); i++) {
-                for (int j = 0; j < mentions.size(); j++) {
-                    if ((mentions.get(j).equals(mentions.get(i)))
-                            && !isInList(usernames,mentions.get(j))) {
-                        count++;
+
+            for (int i = 0; i < mentions.size(); i++){
+                if (!isInList(usernames,mentions.get(i))){
+                    for (int j = 0; j < mentions.size(); j++){
+                        if (mentions.get(i).equals(mentions.get(j))){
+                            count++;
+                        }
                     }
+                    usernames.add(mentions.get(i));
+                    counts.add(count);
                 }
-                usernames.add(mentions.get(i));
-                counts.add(count);
             }
 
             for (int i = 0; i < counts.size() - 1; i++) {
@@ -418,14 +414,12 @@ public class TwitterJ {
                 }
             }
 
-            System.out.println("i am in investigate");
             //print out ordered mentions
             for (int i = 0; i < usernames.size(); i ++) {
-                System.out.println("Username " + (i + 1) + ": " + usernames.get(i));
+                System.out.println("#" + (i + 1) + ": " + usernames.get(i));
                 System.out.println("Number of mentions: " + counts.get(i));
                 System.out.println();
             }
-
 
         } catch (TwitterException t) {
             t.printStackTrace();
